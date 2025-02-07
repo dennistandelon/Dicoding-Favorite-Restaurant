@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:submission1_dennistandelon/model/restaurant.dart';
 import 'package:submission1_dennistandelon/screen/home/restaurant_card.dart';
+import 'package:submission1_dennistandelon/static/navigation_route.dart';
 
-class HomeScreen extends StatelessWidget{
+class HomeScreen extends StatefulWidget{
   const HomeScreen({super.key});
   
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Restaurant List"),
@@ -16,7 +23,16 @@ class HomeScreen extends StatelessWidget{
         itemBuilder: (context, index) {
           final restaurant = restaurants[index];
 
-          return RestaurantCard(restaurant: restaurant,);
+          return RestaurantCard(
+            restaurant: restaurant, 
+            onTap: (){
+              Navigator.pushNamed(
+                context, 
+                NavigationRoute.detailRoute.name, 
+                arguments: restaurant
+              );
+            },
+          );
         },
       ),
     );
