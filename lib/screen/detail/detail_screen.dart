@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:submission1_dennistandelon/model/restaurant.dart';
+import 'package:submission1_dennistandelon/data/model/restaurant.dart';
 
 class DetailScreen extends StatelessWidget {
   final Restaurant restaurant;
@@ -47,17 +47,6 @@ class DetailScreen extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 18,
               ),
-            ),
-            ListView.builder(
-              shrinkWrap: true,
-              itemCount: restaurant.menus.length,
-              itemBuilder: (context, index) {
-                final menu = restaurant.menus[index];
-                return ListTile(
-                  title: Text(menu.name),
-                  subtitle: Text(menu.price.toString()),
-                );
-              },
             ),
           ],
         ),

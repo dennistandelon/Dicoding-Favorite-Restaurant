@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:submission1_dennistandelon/model/restaurant.dart';
+import 'package:submission1_dennistandelon/data/model/restaurant.dart';
 import 'package:submission1_dennistandelon/screen/home/home_screen.dart';
 import 'package:submission1_dennistandelon/screen/detail/detail_screen.dart';
 import 'package:submission1_dennistandelon/static/navigation_route.dart';

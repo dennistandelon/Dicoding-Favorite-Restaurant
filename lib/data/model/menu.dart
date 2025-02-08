@@ -8,4 +8,6 @@ class Menu{
     required this.imageUrl,
     required this.price,
   });
+
+  
 }
