@@ -17,48 +17,76 @@ class RestaurantCard extends StatelessWidget {
 
     return GestureDetector(
       onTap: onTap,
-      child: Card(
-        child: Column(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.network(
-              restaurant.imageUrl,
-              fit: BoxFit.cover,
-            ),
-            const SizedBox.square(dimension: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        restaurant.name,
-                        style: const TextStyle(fontSize: 18),
-                      ),
-                      Text(
-                        restaurant.location,
-                        style: const TextStyle(
-                          fontSize: 12,
-                        ),
-                      ),
-                    ],
+            ConstrainedBox(
+                constraints: const BoxConstraints(
+                  maxHeight: 80,
+                  minHeight: 80,
+                  maxWidth: 120,
+                  minWidth: 120,
+                ),
+                child: Hero(
+                  tag: restaurant.imageUrl,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8.0),
+                    child:Image.network(
+                      restaurant.imageUrl,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
+            ),
+            const SizedBox.square(dimension: 16),
+            Expanded(
+              child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  restaurant.name,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox.square(dimension: 6),
                 Row(
                   children: [
-                    const Icon(Icons.favorite),
-                    const SizedBox.square(dimension: 4),
-                    Text(restaurant.rating.toString())
+                    const Icon(
+                      Icons.location_on,
+                      size: 14,
+                    ),
+                    Text(
+                      restaurant.location,
+                      style: const TextStyle(
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox.square(dimension: 6),
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.star,
+                      size: 14,
+                    ),
+                    Text(
+                      restaurant.rating.toString(),
+                      style: const TextStyle(
+                        fontSize: 14,
+                      ),
+                    ),
                   ],
                 ),
               ],
             ),
-            const SizedBox.square(dimension: 16),
-            Text(
-              restaurant.description,
-            ),
+           ),
           ],
         ),
       )

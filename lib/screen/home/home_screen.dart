@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:submission1_dennistandelon/data/model/restaurant_list_response.dart';
+import 'package:provider/provider.dart';
+import 'package:submission1_dennistandelon/provider/restaurant_list_provider.dart';
 import 'package:submission1_dennistandelon/screen/home/restaurant_card.dart';
 import 'package:submission1_dennistandelon/static/navigation_route.dart';
-import 'package:submission1_dennistandelon/data/api/api_services.dart';
+import 'package:submission1_dennistandelon/static/restaurant_list_result_state.dart';
 
 class HomeScreen extends StatefulWidget{
   const HomeScreen({super.key});
@@ -12,12 +13,14 @@ class HomeScreen extends StatefulWidget{
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late Future<RestaurantListResponse> _futureRestaurantList;
 
   @override
   void initState() {
     super.initState();
-    _futureRestaurantList = ApiServices().getRestaurantList();
+
+    Future.microtask(() {
+      context.read<RestaurantListProvider>().fetchRestaurantList();
+    });
   }
 
   @override
@@ -25,46 +28,38 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Restaurant List"),
+        title: const Text("Restaurant"),
       ),
-      body: FutureBuilder(
-       future: _futureRestaurantList,
-       builder: (context, snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.waiting:
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            case ConnectionState.done:
-              if (snapshot.hasError) {
-                return Center(
-                  child: Text(snapshot.error.toString()),
-                );
-              }
-  
-              final listOfRestaurant = snapshot.data!.restaurants;
-              return ListView.builder(
-                itemCount: listOfRestaurant.length,
-                itemBuilder: (context, index) {
-                  final restaurant = listOfRestaurant[index];
-
-                  return RestaurantCard(
-                    restaurant: restaurant, 
-                    onTap: (){
-                      Navigator.pushNamed(
-                        context, 
-                        NavigationRoute.detailRoute.name, 
-                        arguments: restaurant
+      body: Consumer<RestaurantListProvider>(
+        builder: (context, value, child) {
+          return switch (value.resultState) {
+            RestaurantListLoadingState() => const Center(
+               child: CircularProgressIndicator(),
+             ),
+            RestaurantListLoadedState(data: var restaurantList) => ListView.builder(
+                    itemCount: restaurantList.length,
+                    itemBuilder: (context, index) {
+                      final restaurant = restaurantList[index];
+                      
+                      return RestaurantCard(
+                        restaurant: restaurant, 
+                        onTap: (){
+                          Navigator.pushNamed(
+                            context, 
+                            NavigationRoute.detailRoute.name, 
+                            arguments: restaurant.id
+                          );
+                        },
                       );
                     },
-                  );
-                },
-              );
-            default:
-              return const SizedBox();
-          }
-       },
-     ),
+              ),
+            RestaurantListErrorState(error: var message) => Center(
+                child: Text(message),
+              ),
+            _ => const SizedBox(),
+          };
+        },
+      ),
       
     );
   }

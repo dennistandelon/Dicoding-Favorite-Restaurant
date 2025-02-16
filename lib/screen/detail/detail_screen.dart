@@ -1,56 +1,50 @@
+import 'dart:async';
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import 'package:submission1_dennistandelon/data/model/restaurant.dart';
+import 'package:submission1_dennistandelon/provider/restaurant_detail_provider.dart';
+import 'package:submission1_dennistandelon/screen/detail/detail_body.dart';
+import 'package:submission1_dennistandelon/static/restaurant_detail_result_state.dart';
 
-class DetailScreen extends StatelessWidget {
-  final Restaurant restaurant;
-  
-  const DetailScreen({
-    super.key,
-    required this.restaurant,
-  });
+class DetailScreen extends StatefulWidget {
+  final String restaurantId;
+  const DetailScreen({super.key, required this.restaurantId});
 
+  @override
+  State<DetailScreen> createState() => _DetailScreenState();
+}
+
+class _DetailScreenState extends State<DetailScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+
+    Future.microtask(() {
+      context.read<RestaurantDetailProvider>().fetchRestaurantDetail(widget.restaurantId);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(restaurant.name),
+        title: const Text("Restaurant Detail"),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Image.network(
-              restaurant.imageUrl,
-              fit: BoxFit.cover,
-            ),
-            const SizedBox.square(dimension: 16),
-            Text(
-              restaurant.name,
-              style: const TextStyle(fontSize: 18),
-            ),
-            Text(
-              restaurant.location,
-              style: const TextStyle(
-                fontSize: 12,
+      body: Consumer<RestaurantDetailProvider>(
+        builder: (context, value, child) {
+          return switch (value.resultState) {
+            RestaurantDetailLoadingState() => const Center(
+                child: CircularProgressIndicator(),
               ),
-            ),
-            const SizedBox.square(dimension: 16),
-            Text(
-              restaurant.description,
-              style: const TextStyle(
-                fontSize: 14,
+            RestaurantDetailLoadedState(data: var restaurant) => DetailBody(restaurant: restaurant),
+            RestaurantDetailErrorState(error: var message) => Center(
+                child: Text(message),
               ),
-            ),
-            const SizedBox.square(dimension: 16),
-            Text(
-              "Menu",
-              style: const TextStyle(
-                fontSize: 18,
-              ),
-            ),
-          ],
-        ),
+            _ => const SizedBox(),
+          };
+        },
       ),
     );
   }
 }
+

@@ -5,7 +5,6 @@ class Restaurant {
   final String description;
   final String imageUrl;
   final double rating;
-  // List<Menu> menus = [];
 
   Restaurant({
     required this.id,
