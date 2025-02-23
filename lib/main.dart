@@ -4,6 +4,7 @@ import 'package:submission1_dennistandelon/data/api/api_services.dart';
 import 'package:submission1_dennistandelon/provider/navbar_provider.dart';
 import 'package:submission1_dennistandelon/provider/restaurant_list_provider.dart';
 import 'package:submission1_dennistandelon/provider/restaurant_detail_provider.dart';
+import 'package:submission1_dennistandelon/provider/search_provider.dart';
 import 'package:submission1_dennistandelon/screen/main_screen.dart';
 import 'package:submission1_dennistandelon/screen/detail/detail_screen.dart';
 import 'package:submission1_dennistandelon/screen/search/search_screen.dart';
@@ -35,6 +36,11 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
          create: (context) => RestaurantDetailProvider(
+           context.read<ApiServices>(),
+         )
+        ),
+        ChangeNotifierProvider(
+         create: (context) => SearchProvider(
            context.read<ApiServices>(),
          )
         ),

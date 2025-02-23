@@ -37,8 +37,8 @@ class _DetailScreenState extends State<DetailScreen> {
                 child: CircularProgressIndicator(),
               ),
             RestaurantDetailLoadedState(data: var restaurant) => DetailBody(restaurant: restaurant),
-            RestaurantDetailErrorState(error: var message) => Center(
-                child: Text(message),
+            RestaurantDetailErrorState() => Center(
+                child: Text("Sorry, There was an error. Please try again later."),
               ),
             _ => const SizedBox(),
           };

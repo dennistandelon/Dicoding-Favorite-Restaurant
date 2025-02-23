@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:submission1_dennistandelon/data/model/dto/restaurant_list_response.dart';
+import 'package:provider/provider.dart';
+import 'package:submission1_dennistandelon/provider/search_provider.dart';
 import 'package:submission1_dennistandelon/screen/home/restaurant_card.dart';
 import 'package:submission1_dennistandelon/static/navigation_route.dart';
-import 'package:submission1_dennistandelon/data/api/api_services.dart';
+import 'package:submission1_dennistandelon/static/restaurant_list_result_state.dart';
 
 class SearchScreen extends StatefulWidget{
   const SearchScreen({super.key});
@@ -12,12 +13,10 @@ class SearchScreen extends StatefulWidget{
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  late Future<RestaurantListResponse> _futureRestaurantList;
 
   @override
   void initState() {
     super.initState();
-    _futureRestaurantList = ApiServices().getRestaurantList();
   }
 
   @override
@@ -25,28 +24,41 @@ class _SearchScreenState extends State<SearchScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Search Restaurant"),
-      ),
-      body: FutureBuilder(
-       future: _futureRestaurantList,
-       builder: (context, snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.waiting:
-              return const Center(
-                child: CircularProgressIndicator(),
+        title: Consumer<SearchProvider>(
+          builder: (context, value, child){
+            return TextField(
+              controller: value.searchController,
+              decoration: const InputDecoration(
+                hintText: "Search Restaurants...",
+                border: InputBorder.none,
+              ),
+              style: Theme.of(context).textTheme.labelMedium,
+            );
+          },
+        ),
+        actions: <Widget>[
+          Consumer<SearchProvider>(
+            builder: (context, value, child){
+              return IconButton(
+                icon: const Icon(Icons.search),
+                onPressed: (){
+                  context.read<SearchProvider>().fetchSearchList(value.searchController.text);
+                }, // Trigger search on button press
               );
-            case ConnectionState.done:
-              if (snapshot.hasError) {
-                return Center(
-                  child: Text(snapshot.error.toString()),
-                );
-              }
-  
-              final listOfRestaurant = snapshot.data!.restaurants;
-              return ListView.builder(
-                    itemCount: listOfRestaurant.length,
+            },
+          ),
+        ],
+      ),
+      body: Consumer<SearchProvider>(
+        builder: (context, value, child) {
+          return switch (value.resultState) {
+            RestaurantListLoadingState() => const Center(
+               child: CircularProgressIndicator(),
+             ),
+            RestaurantListLoadedState(data: var restaurantList) => ListView.builder(
+                    itemCount: restaurantList.length,
                     itemBuilder: (context, index) {
-                      final restaurant = listOfRestaurant[index];
+                      final restaurant = restaurantList[index];
                       
                       return RestaurantCard(
                         restaurant: restaurant, 
@@ -54,17 +66,19 @@ class _SearchScreenState extends State<SearchScreen> {
                           Navigator.pushNamed(
                             context, 
                             NavigationRoute.detailRoute.name, 
-                            arguments: restaurant
+                            arguments: restaurant.id
                           );
                         },
                       );
                     },
-              );
-            default:
-              return const SizedBox();
-          }
-       },
-     ),
+              ),
+            RestaurantListErrorState() => Center(
+                child: Text("Sorry, There was an error. Please try again later."),
+              ),
+            _ => const SizedBox(),
+          };
+        },
+      ),
       
     );
   }

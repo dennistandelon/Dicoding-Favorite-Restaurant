@@ -53,8 +53,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       );
                     },
               ),
-            RestaurantListErrorState(error: var message) => Center(
-                child: Text(message),
+            RestaurantListErrorState() => Center(
+                child: Text("Sorry, There was an error. Please try again later."),
               ),
             _ => const SizedBox(),
           };
