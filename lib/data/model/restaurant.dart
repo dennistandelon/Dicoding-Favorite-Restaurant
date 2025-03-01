@@ -29,4 +29,15 @@ class Restaurant {
 
     return restaurant;
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "id": id,
+      "name": name,
+      "location": location,
+      "description": description,
+      "imageUrl": imageUrl,
+      "rating": rating,
+    };
+  }
 }

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:submission1_dennistandelon/data/model/restaurant.dart';
 import 'package:submission1_dennistandelon/data/model/restaurant_detail.dart';
+import 'package:submission1_dennistandelon/provider/database_provider.dart';
 
 class DetailBody extends StatelessWidget{
   final RestaurantDetail restaurant;
@@ -9,21 +12,93 @@ class DetailBody extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
 
+    return Consumer<DatabaseProvider>(
+      builder: (context, value, child) {
+        return FutureBuilder<bool>(
+          future: value.isFavorite(restaurant.id),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return _buildBody(context, value, snapshot.data ?? false);
+            } else {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
+        );
+      },
+    );
+    
+  }
+
+  Widget _buildBody(BuildContext context, DatabaseProvider provider, bool isFavorite) {
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Hero(
-              tag: restaurant.imageUrl,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(8.0),
-                child:Image.network(
-                  restaurant.imageUrl,
-                  fit: BoxFit.cover,
+            Stack(
+              children: [
+                 Hero(
+                  tag: restaurant.imageUrl,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8.0),
+                    child:Image.network(
+                      restaurant.imageUrl,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
-              ),
+                Positioned(
+                  bottom: 16,
+                  right: 16,
+                  child: isFavorite ? FloatingActionButton(
+                              onPressed: () {
+                                provider.removeFavorite(restaurant.id);
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    duration: Duration(seconds: 2),
+                                    content: Text(
+                                      'Removed from Favorite',
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: const Icon(
+                                Icons.favorite,
+                                size: 28,
+                              ),
+                            )
+                          : FloatingActionButton(
+                              onPressed: () {
+                                provider.addFavorite(
+                                  Restaurant(
+                                    id: restaurant.id,
+                                    name: restaurant.name,
+                                    description: restaurant.description,
+                                    location: restaurant.location,
+                                    imageUrl: restaurant.imageUrl,
+                                    rating: restaurant.rating,
+                                  ),
+                                );
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    duration: Duration(seconds: 1),
+                                    content: Text(
+                                      'Added to Favorite',
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: const Icon(
+                                Icons.favorite_border,
+                                size: 28,
+                              ),
+                            ),
+                ),
+              ],
             ),
-            const SizedBox.square(dimension: 16),
+            const SizedBox(height: 40),
             Text(
               restaurant.name,
               style: Theme.of(context).textTheme.headlineLarge,

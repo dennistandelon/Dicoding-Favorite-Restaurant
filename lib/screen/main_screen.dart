@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:submission1_dennistandelon/provider/navbar_provider.dart';
 import 'package:submission1_dennistandelon/screen/home/home_screen.dart';
 import 'package:submission1_dennistandelon/screen/search/search_screen.dart';
+import 'package:submission1_dennistandelon/screen/favorite/favorite_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -15,6 +16,7 @@ class _MainScreenState extends State<MainScreen> {
   final List<Widget> _children = [
     HomeScreen(),
     SearchScreen(),
+    FavoriteScreen()
   ];
 
   @override
@@ -33,6 +35,10 @@ class _MainScreenState extends State<MainScreen> {
             BottomNavigationBarItem(
               icon: Icon(Icons.search),
               label: 'Search',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.favorite),
+              label: 'Favorites',
             ),
         ],
       ),

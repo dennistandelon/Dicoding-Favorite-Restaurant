@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:submission1_dennistandelon/data/api/api_services.dart';
+import 'package:submission1_dennistandelon/data/database/sqlite_service.dart';
 import 'package:submission1_dennistandelon/provider/navbar_provider.dart';
 import 'package:submission1_dennistandelon/provider/restaurant_list_provider.dart';
 import 'package:submission1_dennistandelon/provider/restaurant_detail_provider.dart';
@@ -10,6 +11,7 @@ import 'package:submission1_dennistandelon/screen/detail/detail_screen.dart';
 import 'package:submission1_dennistandelon/screen/search/search_screen.dart';
 import 'package:submission1_dennistandelon/static/navigation_route.dart';
 import 'package:submission1_dennistandelon/style/theme/restaurant_theme.dart';
+import 'package:submission1_dennistandelon/provider/database_provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -43,6 +45,14 @@ class MyApp extends StatelessWidget {
          create: (context) => SearchProvider(
            context.read<ApiServices>(),
          )
+        ),
+        Provider(
+          create: (context) => SqliteService(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => DatabaseProvider(
+            context.read<SqliteService>(),
+          ),
         ),
       ],
       child: MaterialApp(
