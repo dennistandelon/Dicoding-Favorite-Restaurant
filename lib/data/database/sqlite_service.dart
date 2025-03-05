@@ -46,7 +46,8 @@ class SqliteService {
 
   Future<void> insertFavorite(Map<String, dynamic> restaurant) async {
     final db = await database;
-    await db.insert(_tableName, restaurant);
+
+    await db.insert(_tableName, restaurant, conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   Future<Restaurant?> getItemById(String id) async {
@@ -71,6 +72,9 @@ class SqliteService {
   Future<List<Restaurant>> getFavorites() async {
     final db = await database;
     final results = await db.query(_tableName);
+
+    if (results.isEmpty) return List.empty();
+
     return results.map((result) => Restaurant.fromJson(result)).toList();
   }
 }

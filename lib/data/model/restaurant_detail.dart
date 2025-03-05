@@ -37,7 +37,7 @@ class RestaurantDetail {
         description: json["description"],
         city: json["city"],
         location: json["address"],
-        imageUrl: "https://restaurant-api.dicoding.dev/images/small/${json["pictureId"]}",
+        imageUrl: json["imageUrl"] ?? "https://restaurant-api.dicoding.dev/images/small/${json["pictureId"]}",
         rating: json["rating"].toDouble(),
         categories: json["categories"] != null ? List<Category>.from(json["categories"].map((x) => Category.fromJson(x))): [],
         menus:  Menus.fromJson(json["menus"]),
