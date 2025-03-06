@@ -1,29 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:submission1_dennistandelon/services/notification_service.dart';
+import '../services/work_manager_service.dart';
 
 class NotificationProvider extends ChangeNotifier {
-  final NotificationService flutterNotificationService;
-  
-  NotificationProvider(this.flutterNotificationService);
+  bool _isScheduled = false;
+  bool get isScheduled => _isScheduled;
 
-  int _notificationId = 0;
-  bool? _permission = false;
-  bool? get permission => _permission;
-  
-  Future<void> requestPermissions() async {
-    _permission = await flutterNotificationService.requestPermissions();
+  final WorkManagerService _workmanager;
+
+  NotificationProvider(WorkManagerService this._workmanager) {
+    _workmanager.init();
+  }
+
+  Future<void> scheduleDailyNotification(bool value) async {
+    _isScheduled = value;
+
+    if (_isScheduled) {
+      _workmanager.registerDailyNotification();
+      debugPrint('Scheduling Reminder Activated');
+    } else {
+      _workmanager.cancelNotification();
+      debugPrint('Scheduling Reminder Canceled');
+    }
+
     notifyListeners();
   }
-
-  void showNotification() {
-    _notificationId += 1;
-    flutterNotificationService.showNotification(
-      id: _notificationId,
-      title: "New Notification",
-      body: "This is a new notification with id $_notificationId",
-      payload: "This is a payload from notification with id $_notificationId",
-    );
-  }
-
-  
 }

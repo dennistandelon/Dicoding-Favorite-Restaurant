@@ -11,14 +11,6 @@ class SettingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<PreferenceProvider>(
       builder: (context, provider, _) {
-
-        Future<void> _requestPermission() async {
-          context.read<NotificationProvider>().requestPermissions();
-        }
-
-        Future<void> _showNotification() async {
-          context.read<NotificationProvider>().showNotification();
-        }
         
         return Scaffold(
           appBar: AppBar(
@@ -33,20 +25,15 @@ class SettingScreen extends StatelessWidget {
                   provider.setTheme(value);
                 },
               ),
-              ElevatedButton(
-               onPressed: () async {
-                 await _requestPermission();
-               },
-               child: Consumer<NotificationProvider>(
-                 builder: (context, value, child) {
-
-                    return Text(
-                      "Request permission! (${value.permission})",
-                      textAlign: TextAlign.center,
-                    );
-                 },
-               ),
-             ),
+              SwitchListTile(
+                title: const Text('Daily Reminder'),
+                value: provider.isDailyReminderActive,
+                onChanged: (value) {
+                  context.read<NotificationProvider>().scheduleDailyNotification(value);
+                  
+                  provider.setDailyReminder(value);
+                },
+              ),
             ],
           ),
         );

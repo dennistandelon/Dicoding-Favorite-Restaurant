@@ -54,7 +54,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                     },
               ),
             RestaurantListErrorState() => Center(
-                child: Text("Sorry, There was an error. Please try again later."),
+                child: Text("Sorry, There was no data here. Go make some favorite and back here!"),
               ),
             _ => const SizedBox(),
           };

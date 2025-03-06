@@ -43,6 +43,16 @@ dependencies:
   test: ^1.25.2
   mocktail: ^1.0.4
   flutter_local_notifications: ^18.0.1
+  flutter_timezone: ^4.1.0
+  timezone: ^0.10.0
+  mockito: ^5.4.5
+  build_runner: ^2.4.15
+  
+  workmanager:
+    git:
+      url: https://github.com/fluttercommunity/flutter_workmanager.git
+      path: workmanager
+      ref: main
 
 dev_dependencies:
   flutter_test:

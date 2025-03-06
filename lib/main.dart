@@ -15,8 +15,11 @@ import 'package:submission1_dennistandelon/static/navigation_route.dart';
 import 'package:submission1_dennistandelon/style/theme/restaurant_theme.dart';
 import 'package:submission1_dennistandelon/provider/database_provider.dart';
 import 'package:submission1_dennistandelon/services/notification_service.dart';
+import 'package:submission1_dennistandelon/services/work_manager_service.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   runApp(
     MultiProvider(
       providers: [
@@ -53,12 +56,10 @@ void main() {
           create: (context) => PreferenceProvider(),
         ),
         Provider(
-          create: (context) => NotificationService()..init(),
+          create: (context) => NotificationService.initNotifications(),
         ),
         ChangeNotifierProvider(
-         create: (context) => NotificationProvider(
-           context.read<NotificationService>(),
-         )..requestPermissions(),
+         create: (context) => NotificationProvider(WorkManagerService()),
        ),
       ],
       child: const MyApp(),
