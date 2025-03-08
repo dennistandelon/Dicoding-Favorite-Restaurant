@@ -3,7 +3,6 @@ import 'package:submission1_dennistandelon/style/typography/restaurant_text_styl
 import 'package:flutter/material.dart';
 
 class RestaurantTheme {
-
   static TextTheme get _textTheme {
     return TextTheme(
       displayLarge: RestaurantTextStyles.displayLarge,
@@ -45,7 +44,7 @@ class RestaurantTheme {
       appBarTheme: _appBarTheme,
     );
   }
-  
+
   static ThemeData get darkTheme {
     return ThemeData(
       colorSchemeSeed: RestaurantColors.blue.color,

@@ -11,15 +11,15 @@ class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
   @override
-  _MainScreenState createState() => _MainScreenState();
+  MainScreenState createState() => MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class MainScreenState extends State<MainScreen> {
   final List<Widget> _children = [
-    HomeScreen(),
-    SearchScreen(),
-    FavoriteScreen(),
-    SettingScreen(),
+    const HomeScreen(),
+    const SearchScreen(),
+    const FavoriteScreen(),
+    const SettingScreen(),
   ];
 
   @override
@@ -33,26 +33,31 @@ class _MainScreenState extends State<MainScreen> {
         onTap: (index) {
           context.read<NavBarProvider>().setBottomNavBarIdx = index;
         },
-        selectedItemColor: isDarkTheme ? Colors.white : theme.primaryColor, // Active icon color
-        unselectedItemColor: isDarkTheme ? Colors.grey[400] : Colors.grey[700], // Inactive icon color
-        backgroundColor: theme.bottomNavigationBarTheme.backgroundColor, // Background color
+        selectedItemColor: isDarkTheme
+            ? Colors.white
+            : theme.primaryColor, // Active icon color
+        unselectedItemColor: isDarkTheme
+            ? Colors.grey[400]
+            : Colors.grey[700], // Inactive icon color
+        backgroundColor:
+            theme.bottomNavigationBarTheme.backgroundColor, // Background color
         items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.restaurant),
-              label: 'Restaurants',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.search),
-              label: 'Search',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.favorite),
-              label: 'Favorites',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              label: 'Settings',
-            ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.restaurant),
+            label: 'Restaurants',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: 'Search',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite),
+            label: 'Favorites',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Settings',
+          ),
         ],
       ),
       body: _children[context.watch<NavBarProvider>().bottomNavBarIdx],

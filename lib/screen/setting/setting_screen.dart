@@ -3,15 +3,13 @@ import 'package:provider/provider.dart';
 import 'package:submission1_dennistandelon/provider/notification_provider.dart';
 import 'package:submission1_dennistandelon/provider/preference_provider.dart';
 
-
 class SettingScreen extends StatelessWidget {
-  const SettingScreen({Key? key}) : super(key: key);
+  const SettingScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Consumer<PreferenceProvider>(
       builder: (context, provider, _) {
-        
         return Scaffold(
           appBar: AppBar(
             title: const Text('Settings'),
@@ -29,8 +27,10 @@ class SettingScreen extends StatelessWidget {
                 title: const Text('Daily Reminder'),
                 value: provider.isDailyReminderActive,
                 onChanged: (value) {
-                  context.read<NotificationProvider>().scheduleDailyNotification(value);
-                  
+                  context
+                      .read<NotificationProvider>()
+                      .scheduleDailyNotification(value);
+
                   provider.setDailyReminder(value);
                 },
               ),

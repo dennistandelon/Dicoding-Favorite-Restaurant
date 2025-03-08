@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:submission1_dennistandelon/data/model/restaurant.dart';
 
-
 class RestaurantCard extends StatelessWidget {
   final Restaurant restaurant;
   final Function() onTap;
@@ -14,15 +13,14 @@ class RestaurantCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return GestureDetector(
-      onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ConstrainedBox(
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ConstrainedBox(
                 constraints: const BoxConstraints(
                   maxHeight: 80,
                   minHeight: 80,
@@ -33,64 +31,65 @@ class RestaurantCard extends StatelessWidget {
                   tag: restaurant.imageUrl,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8.0),
-                    child:Image.network(
+                    child: Image.network(
                       restaurant.imageUrl,
                       fit: BoxFit.cover,
+                      errorBuilder: (_, __, ___) {
+                        return const Icon(Icons.error_outline);
+                      },
                     ),
                   ),
                 ),
-            ),
-            const SizedBox.square(dimension: 16),
-            Expanded(
-              child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  restaurant.name,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox.square(dimension: 6),
-                Row(
+              ),
+              const SizedBox.square(dimension: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(
-                      Icons.location_on,
-                      size: 14,
-                    ),
                     Text(
-                      restaurant.location,
+                      restaurant.name,
                       style: const TextStyle(
-                        fontSize: 14,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
                       ),
+                    ),
+                    const SizedBox.square(dimension: 6),
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.location_on,
+                          size: 14,
+                        ),
+                        Text(
+                          restaurant.location,
+                          style: const TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox.square(dimension: 6),
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.star,
+                          size: 14,
+                        ),
+                        Text(
+                          restaurant.rating.toString(),
+                          style: const TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-                const SizedBox.square(dimension: 6),
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.star,
-                      size: 14,
-                    ),
-                    Text(
-                      restaurant.rating.toString(),
-                      style: const TextStyle(
-                        fontSize: 14,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-           ),
-          ],
-        ),
-      )
-    );
+              ),
+            ],
+          ),
+        ));
   }
-
 }

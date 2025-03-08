@@ -5,16 +5,16 @@ import 'package:submission1_dennistandelon/static/restaurant_list_result_state.d
 
 class DatabaseProvider extends ChangeNotifier {
   final SqliteService _service;
-  
-  DatabaseProvider(this._service){
+
+  DatabaseProvider(this._service) {
     getFavoriteRestaurants();
   }
-  
+
   String _message = "";
   String get message => _message;
 
   RestaurantListResultState _resultState = RestaurantListNoneState();
- 
+
   RestaurantListResultState get resultState => _resultState;
 
   void addFavorite(Restaurant restaurant) async {
@@ -51,9 +51,9 @@ class DatabaseProvider extends ChangeNotifier {
     try {
       _resultState = RestaurantListLoadingState();
       notifyListeners();
-  
+
       final result = await _service.getFavorites();
-  
+
       if (result.isEmpty) {
         _resultState = RestaurantListErrorState("No Data");
         notifyListeners();
@@ -68,14 +68,12 @@ class DatabaseProvider extends ChangeNotifier {
   }
 
   Future<bool> isFavorite(String id) async {
-     
-      final result = await _service.getItemById(id);
+    final result = await _service.getItemById(id);
 
-      if (result == null) {
-        return false;
-      } 
+    if (result == null) {
+      return false;
+    }
 
-      return true;
+    return true;
   }
-
 }

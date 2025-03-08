@@ -14,12 +14,12 @@ class DetailScreen extends StatefulWidget {
 }
 
 class _DetailScreenState extends State<DetailScreen> {
-
   @override
   void initState() {
     super.initState();
 
     Future.microtask(() {
+      if (!mounted) return;
       context.read<RestaurantDetailProvider>().fetchRestaurantDetail(widget.restaurantId);
     });
   }
@@ -36,9 +36,11 @@ class _DetailScreenState extends State<DetailScreen> {
             RestaurantDetailLoadingState() => const Center(
                 child: CircularProgressIndicator(),
               ),
-            RestaurantDetailLoadedState(data: var restaurant) => DetailBody(restaurant: restaurant),
-            RestaurantDetailErrorState() => Center(
-                child: Text("Sorry, There was an error. Please try again later."),
+            RestaurantDetailLoadedState(data: var restaurant) =>
+              DetailBody(restaurant: restaurant),
+            RestaurantDetailErrorState() => const Center(
+                child:
+                    Text("Sorry, There was an error. Please try again later."),
               ),
             _ => const SizedBox(),
           };
@@ -47,4 +49,3 @@ class _DetailScreenState extends State<DetailScreen> {
     );
   }
 }
-

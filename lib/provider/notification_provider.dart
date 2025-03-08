@@ -7,7 +7,7 @@ class NotificationProvider extends ChangeNotifier {
 
   final WorkManagerService _workmanager;
 
-  NotificationProvider(WorkManagerService this._workmanager) {
+  NotificationProvider(this._workmanager) {
     _workmanager.init();
   }
 

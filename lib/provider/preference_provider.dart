@@ -16,7 +16,8 @@ class PreferenceProvider extends ChangeNotifier {
   Future<void> _loadPreferences() async {
     _sharedPreferences = await SharedPreferences.getInstance();
     _isDarkTheme = _sharedPreferences?.getBool("isDarkTheme") ?? false;
-    _isDailyReminderActive = _sharedPreferences?.getBool("isDailyReminderActive") ?? false;
+    _isDailyReminderActive =
+        _sharedPreferences?.getBool("isDailyReminderActive") ?? false;
     notifyListeners();
   }
 

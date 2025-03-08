@@ -15,33 +15,36 @@ class RestaurantDetail {
   List<CustomerReview> customerReviews;
 
   RestaurantDetail(
-      {
-        required this.id,
-        required this.name,
-        required this.description,
-        required this.city,
-        required this.location,
-        required this.imageUrl,
-        required this.categories,
-        required this.menus,
-        required this.rating,
-        required this.customerReviews
-      }
-    );
+      {required this.id,
+      required this.name,
+      required this.description,
+      required this.city,
+      required this.location,
+      required this.imageUrl,
+      required this.categories,
+      required this.menus,
+      required this.rating,
+      required this.customerReviews});
 
   factory RestaurantDetail.fromJson(Map<String, dynamic> json) {
-    
     return RestaurantDetail(
-        id: json["id"],
-        name: json["name"],
-        description: json["description"],
-        city: json["city"],
-        location: json["address"],
-        imageUrl: json["imageUrl"] ?? "https://restaurant-api.dicoding.dev/images/small/${json["pictureId"]}",
-        rating: json["rating"].toDouble(),
-        categories: json["categories"] != null ? List<Category>.from(json["categories"].map((x) => Category.fromJson(x))): [],
-        menus:  Menus.fromJson(json["menus"]),
-        customerReviews: json["customerReviews"] != null ? List<CustomerReview>.from(json["customerReviews"].map((x) => CustomerReview.fromJson(x))) : [],
-      );
-    }
+      id: json["id"],
+      name: json["name"],
+      description: json["description"],
+      city: json["city"],
+      location: json["address"],
+      imageUrl: json["imageUrl"] ??
+          "https://restaurant-api.dicoding.dev/images/small/${json["pictureId"]}",
+      rating: json["rating"].toDouble(),
+      categories: json["categories"] != null
+          ? List<Category>.from(
+              json["categories"].map((x) => Category.fromJson(x)))
+          : [],
+      menus: Menus.fromJson(json["menus"]),
+      customerReviews: json["customerReviews"] != null
+          ? List<CustomerReview>.from(
+              json["customerReviews"].map((x) => CustomerReview.fromJson(x)))
+          : [],
+    );
+  }
 }

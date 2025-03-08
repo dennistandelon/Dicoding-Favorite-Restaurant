@@ -34,7 +34,6 @@ class SqliteService {
   }
 
   Future<Database> _initializeDb() async {
-
     return await openDatabase(
       _databaseName,
       version: _version,
@@ -47,12 +46,14 @@ class SqliteService {
   Future<void> insertFavorite(Map<String, dynamic> restaurant) async {
     final db = await database;
 
-    await db.insert(_tableName, restaurant, conflictAlgorithm: ConflictAlgorithm.replace);
+    await db.insert(_tableName, restaurant,
+        conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   Future<Restaurant?> getItemById(String id) async {
     final db = await database;
-    final results = await db.query(_tableName, where: "id = ?", whereArgs: [id], limit: 1);
+    final results =
+        await db.query(_tableName, where: "id = ?", whereArgs: [id], limit: 1);
 
     if (results.isEmpty) return null;
     return Restaurant.fromJson(results.first);

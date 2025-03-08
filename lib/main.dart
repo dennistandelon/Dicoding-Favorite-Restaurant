@@ -20,50 +20,46 @@ import 'package:submission1_dennistandelon/services/work_manager_service.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-         create: (context) => NavBarProvider(),
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(
+        create: (context) => NavBarProvider(),
+      ),
+      Provider(
+        create: (context) => ApiServices(),
+      ),
+      ChangeNotifierProvider(
+          create: (context) => RestaurantListProvider(
+                context.read<ApiServices>(),
+              )),
+      ChangeNotifierProvider(
+          create: (context) => RestaurantDetailProvider(
+                context.read<ApiServices>(),
+              )),
+      ChangeNotifierProvider(
+          create: (context) => SearchProvider(
+                context.read<ApiServices>(),
+              )),
+      Provider(
+        create: (context) => SqliteService(),
+      ),
+      ChangeNotifierProvider(
+        create: (context) => DatabaseProvider(
+          context.read<SqliteService>(),
         ),
-        Provider(
-         create: (context) => ApiServices(),
-        ),
-        ChangeNotifierProvider(
-         create: (context) => RestaurantListProvider(
-           context.read<ApiServices>(),
-         )
-        ),
-        ChangeNotifierProvider(
-         create: (context) => RestaurantDetailProvider(
-           context.read<ApiServices>(),
-         )
-        ),
-        ChangeNotifierProvider(
-         create: (context) => SearchProvider(
-           context.read<ApiServices>(),
-         )
-        ),
-        Provider(
-          create: (context) => SqliteService(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => DatabaseProvider(
-            context.read<SqliteService>(),
-          ),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => PreferenceProvider(),
-        ),
-        Provider(
-          create: (context) => NotificationService.initNotifications(),
-        ),
-        ChangeNotifierProvider(
-         create: (context) => NotificationProvider(WorkManagerService()),
-       ),
-      ],
-      child: const MyApp(),
-    ));
+      ),
+      ChangeNotifierProvider(
+        create: (context) => PreferenceProvider(),
+      ),
+      Provider(
+        create: (context) => NotificationService.initNotifications(),
+      ),
+      ChangeNotifierProvider(
+        create: (context) => NotificationProvider(WorkManagerService()),
+      ),
+    ],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -74,19 +70,19 @@ class MyApp extends StatelessWidget {
     final themeProvider = Provider.of<PreferenceProvider>(context);
 
     return MaterialApp(
-        title: 'Restaurant Favorite App',
-        theme: RestaurantTheme.lightTheme,
-        darkTheme: RestaurantTheme.darkTheme,
-        themeMode: themeProvider.isDarkTheme ? ThemeMode.dark : ThemeMode.light,
-        initialRoute: NavigationRoute.homeRoute.name,
-        routes: {
-          NavigationRoute.homeRoute.name: (context) => const MainScreen(),
-          NavigationRoute.detailRoute.name: (context) => DetailScreen(
-                restaurantId: ModalRoute.of(context)?.settings.arguments as String,
-              ),
-          NavigationRoute.searchRoute.name: (context) => const SearchScreen(),
-        },
+      title: 'Restaurant Favorite App',
+      theme: RestaurantTheme.lightTheme,
+      darkTheme: RestaurantTheme.darkTheme,
+      themeMode: themeProvider.isDarkTheme ? ThemeMode.dark : ThemeMode.light,
+      initialRoute: NavigationRoute.homeRoute.name,
+      routes: {
+        NavigationRoute.homeRoute.name: (context) => const MainScreen(),
+        NavigationRoute.detailRoute.name: (context) => DetailScreen(
+              restaurantId:
+                  ModalRoute.of(context)?.settings.arguments as String,
+            ),
+        NavigationRoute.searchRoute.name: (context) => const SearchScreen(),
+      },
     );
   }
 }
-

@@ -16,7 +16,8 @@ class Restaurant {
   });
 
   factory Restaurant.fromJson(Map<String, dynamic> json) {
-    String imgUrl = json["imageUrl"] ?? "https://restaurant-api.dicoding.dev/images/small/${json["pictureId"]}";
+    String imgUrl = json["imageUrl"] ??
+        "https://restaurant-api.dicoding.dev/images/small/${json["pictureId"]}";
 
     final restaurant = Restaurant(
       id: json["id"],

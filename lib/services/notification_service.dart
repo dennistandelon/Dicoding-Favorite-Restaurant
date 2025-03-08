@@ -2,17 +2,15 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:submission1_dennistandelon/data/model/restaurant.dart';
 
 class NotificationService {
-  static final FlutterLocalNotificationsPlugin _notificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+  static final FlutterLocalNotificationsPlugin _notificationsPlugin = FlutterLocalNotificationsPlugin();
 
   static Future<void> initNotifications() async {
     const AndroidInitializationSettings androidInitSettings =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
+        AndroidInitializationSettings('@drawable/ic_notification');
 
-    final DarwinInitializationSettings iOSInitSettings =
-        DarwinInitializationSettings();
+    const DarwinInitializationSettings iOSInitSettings = DarwinInitializationSettings();
 
-    final InitializationSettings initSettings = InitializationSettings(
+    const InitializationSettings initSettings = InitializationSettings(
       android: androidInitSettings,
       iOS: iOSInitSettings,
     );
@@ -21,11 +19,13 @@ class NotificationService {
   }
 
   static Future<void> showNotification(Restaurant restaurant) async {
-    const AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
+    const AndroidNotificationDetails androidDetails =
+        AndroidNotificationDetails(
       '3', // Channel ID
       'Daily Reminder',
       importance: Importance.max,
       priority: Priority.high,
+      icon: '@drawable/ic_notification',
     );
 
     const NotificationDetails notificationDetails = NotificationDetails(

@@ -18,7 +18,7 @@ void main() {
   Widget createWidgetUnderTest() {
     return ChangeNotifierProvider<RestaurantListProvider>(
       create: (context) => RestaurantListProvider(mockApiServices),
-      child: MaterialApp(home: HomeScreen()),
+      child: const MaterialApp(home: HomeScreen()),
     );
   }
 
