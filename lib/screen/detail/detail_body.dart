@@ -12,25 +12,14 @@ class DetailBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<DatabaseProvider>(
-      builder: (context, value, child) {
-        return FutureBuilder<bool>(
-          future: value.isFavorite(restaurant.id),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              return _buildBody(context, value, snapshot.data ?? false);
-            } else {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-          },
-        );
+      builder: (context, provider, child) {
+        return _buildBody(context, provider, provider.isFavorite);
       },
     );
   }
 
-  Widget _buildBody(
-      BuildContext context, DatabaseProvider provider, bool isFavorite) {
+  Widget _buildBody(BuildContext context, DatabaseProvider provider, bool isFavorite) {
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -108,7 +97,7 @@ class DetailBody extends StatelessWidget {
               style: Theme.of(context).textTheme.headlineLarge,
             ),
             Text(
-              "$restaurant.location, $restaurant.city",
+              "${restaurant.location}, ${restaurant.city}",
               style: Theme.of(context)
                   .textTheme
                   .labelLarge

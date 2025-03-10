@@ -9,10 +9,7 @@ import 'package:submission1_dennistandelon/static/my_workmanager.dart';
 void callbackDispatcher() {
   Workmanager().executeTask((task, inputData) async {
     final apiData = await ApiServices().getRestaurantList();
-    print(apiData);
-
     final randomRestaurant = apiData.restaurants[Random().nextInt(apiData.restaurants.length)];
-    print(randomRestaurant);
 
     await NotificationService.showNotification(randomRestaurant);
 
@@ -27,6 +24,7 @@ class WorkManagerService {
       : _workmanager = workmanager ??= Workmanager();
 
   Future<void> init() async {
+    await NotificationService.requestPermissions();
     await _workmanager.initialize(callbackDispatcher, isInDebugMode: true);
   }
 

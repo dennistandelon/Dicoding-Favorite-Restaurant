@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 import 'package:submission1_dennistandelon/data/model/dto/restaurant_list_response.dart';
 import 'package:submission1_dennistandelon/data/model/restaurant.dart';
 import 'package:submission1_dennistandelon/provider/restaurant_list_provider.dart';
-import 'package:submission1_dennistandelon/screen/detail/detail_screen.dart';
 import 'package:submission1_dennistandelon/screen/home/home_screen.dart';
 
 import '../test/unit_test/restaurant_list_provider_test.mocks.dart';
@@ -34,7 +33,7 @@ void main() {
   testWidgets('Displays loading indicator when fetching data', (WidgetTester tester) async {
     when(mockApiServices.getRestaurantList()).thenAnswer((_) async {
     	await Future.delayed(const Duration(seconds: 2));
-	  throw Exception("API Error");
+	    throw Exception("API Error");
     });
 
     await tester.pumpWidget(createTestApp());

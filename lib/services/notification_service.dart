@@ -1,5 +1,6 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:submission1_dennistandelon/data/model/restaurant.dart';
+import 'package:flutter/foundation.dart';
 
 class NotificationService {
   static final FlutterLocalNotificationsPlugin _notificationsPlugin = FlutterLocalNotificationsPlugin();
@@ -16,6 +17,45 @@ class NotificationService {
     );
 
     await _notificationsPlugin.initialize(initSettings);
+  }
+
+  static Future<bool> _isAndroidPermissionGranted() async {
+    return await _notificationsPlugin
+            .resolvePlatformSpecificImplementation<
+                AndroidFlutterLocalNotificationsPlugin>()
+            ?.areNotificationsEnabled() ?? 
+        false;
+  }
+  
+  static Future<bool> _requestAndroidNotificationsPermission() async {
+    return await _notificationsPlugin
+            .resolvePlatformSpecificImplementation<
+                AndroidFlutterLocalNotificationsPlugin>()
+            ?.requestNotificationsPermission() ??
+        false;
+  }
+  
+  static Future<bool?> requestPermissions() async {
+    if (defaultTargetPlatform == TargetPlatform.iOS) {
+      final iOSImplementation =
+          _notificationsPlugin.resolvePlatformSpecificImplementation<
+              IOSFlutterLocalNotificationsPlugin>();
+      return await iOSImplementation?.requestPermissions(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
+    } else if (defaultTargetPlatform == TargetPlatform.android) {
+      final notificationEnabled = await _isAndroidPermissionGranted();
+      if (!notificationEnabled) {
+        final requestNotificationsPermission =
+            await _requestAndroidNotificationsPermission();
+        return requestNotificationsPermission;
+      }
+      return notificationEnabled;
+    } else {
+      return false;
+    }
   }
 
   static Future<void> showNotification(Restaurant restaurant) async {

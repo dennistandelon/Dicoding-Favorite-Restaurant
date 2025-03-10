@@ -17,6 +17,7 @@ import 'package:submission1_dennistandelon/provider/database_provider.dart';
 import 'package:submission1_dennistandelon/services/notification_service.dart';
 import 'package:submission1_dennistandelon/services/work_manager_service.dart';
 
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 

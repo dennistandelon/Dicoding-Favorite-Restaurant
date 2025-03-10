@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
+import 'package:submission1_dennistandelon/provider/database_provider.dart';
 import 'package:submission1_dennistandelon/provider/restaurant_detail_provider.dart';
 import 'package:submission1_dennistandelon/screen/detail/detail_body.dart';
 import 'package:submission1_dennistandelon/static/restaurant_detail_result_state.dart';
@@ -21,6 +22,7 @@ class _DetailScreenState extends State<DetailScreen> {
     Future.microtask(() {
       if (!mounted) return;
       context.read<RestaurantDetailProvider>().fetchRestaurantDetail(widget.restaurantId);
+      context.read<DatabaseProvider>().checkFavoriteStatus(widget.restaurantId);
     });
   }
 
